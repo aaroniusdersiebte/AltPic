@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build
+dist/
+build/
+*.exe
+*.dmg
+*.pkg
+
+# Config (sensible Daten)
+config/app-settings.json
+config/modules/*.json
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Electron
+out/
+
+PROJECT_MAP.md
+ghflow.bat
+aws-credentials.json
+
+users.json
+assets/
+yous.af

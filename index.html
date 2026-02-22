@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AltPic — Image Stylizer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">Alt<span>Pic</span></h1>
+        <button class="btn-icon" id="btn-reset" title="Reset">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 7"/><path d="M3 22v-7h7"/></svg>
+        </button>
+      </div>
+
+      <div class="controls-scroll">
+        <!-- Upload -->
+        <section class="control-group">
+          <button class="btn-primary" id="btn-upload">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Bild laden
+          </button>
+          <input type="file" id="file-input" accept="image/*" hidden>
+        </section>
+
+        <!-- Adjustments -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="adjustments">
+            <span>Anpassungen</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content" id="adjustments">
+            <div class="slider-control">
+              <label>Helligkeit</label>
+              <div class="slider-row">
+                <input type="range" min="-100" max="100" value="0" data-effect="brightness">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Kontrast</label>
+              <div class="slider-row">
+                <input type="range" min="-100" max="100" value="0" data-effect="contrast">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Sättigung</label>
+              <div class="slider-row">
+                <input type="range" min="-100" max="100" value="0" data-effect="saturation">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Hue Rotation</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="360" value="0" data-effect="hue">
+                <span class="slider-value">0°</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Color Effects -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="color-fx">
+            <span>Farb-Effekte</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content collapsed" id="color-fx">
+            <div class="slider-control">
+              <label>Posterize</label>
+              <div class="slider-row">
+                <input type="range" min="2" max="32" value="32" data-effect="posterize">
+                <span class="slider-value">32</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Sepia</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="sepia">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Invertieren</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="invert">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Duotone</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="duotone">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="color-row">
+              <label>Farbe A</label>
+              <input type="color" value="#000000" data-effect="duotoneColorA">
+              <label>Farbe B</label>
+              <input type="color" value="#ffffff" data-effect="duotoneColorB">
+            </div>
+          </div>
+        </section>
+
+        <!-- Dithering -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="dithering">
+            <span>Dithering</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content collapsed" id="dithering">
+            <div class="slider-control">
+              <label>Algorithmus</label>
+              <select data-effect="ditherAlgo">
+                <option value="none">Aus</option>
+                <option value="floydSteinberg">Floyd-Steinberg</option>
+                <option value="atkinson">Atkinson</option>
+                <option value="sierra">Sierra</option>
+                <option value="jjn">Jarvis-Judice-Ninke</option>
+                <option value="stucki">Stucki</option>
+                <option value="bayer4">Bayer 4×4</option>
+                <option value="bayer8">Bayer 8×8</option>
+                <option value="bayer16">Bayer 16×16</option>
+                <option value="random">Zufall (Noise)</option>
+              </select>
+            </div>
+            <div class="slider-control">
+              <label>Serpentine</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="ditherSerpentine">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="slider-control">
+              <label>Farbanzahl</label>
+              <div class="slider-row">
+                <input type="range" min="2" max="16" value="2" data-effect="ditherColors">
+                <span class="slider-value">2</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Stärke</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="100" data-effect="ditherStrength">
+                <span class="slider-value">100</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Körnigkeit</label>
+              <div class="slider-row">
+                <input type="range" min="1" max="16" value="1" data-effect="ditherBlockSize">
+                <span class="slider-value">1</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Palette</label>
+              <select data-effect="ditherPalette">
+                <option value="bw">Schwarz/Weiß</option>
+                <option value="cga">CGA</option>
+                <option value="gameboy">Game Boy</option>
+                <option value="ega">EGA (64)</option>
+                <option value="nes">NES (64)</option>
+                <option value="pico8">Pico-8 (16)</option>
+                <option value="zxspec">ZX Spectrum (15)</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="slider-control">
+              <label>Custom Farben</label>
+              <textarea class="text-input textarea-input" data-effect="ditherCustomColors" placeholder="#ff0000,#00ff00,#0000ff">#000000,#ffffff</textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dot Matrix -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="dot-matrix">
+            <span>Dot Matrix</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content collapsed" id="dot-matrix">
+            <div class="slider-control">
+              <label>Intensität</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="dotMatrix">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Raster</label>
+              <div class="slider-row">
+                <input type="range" min="2" max="32" value="8" data-effect="dotMatrixSize">
+                <span class="slider-value">8</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Form</label>
+              <select data-effect="dotMatrixShape">
+                <option value="circle">Kreis</option>
+                <option value="square">Quadrat</option>
+                <option value="diamond">Raute</option>
+                <option value="ring">Ring</option>
+                <option value="cross">Kreuz</option>
+              </select>
+            </div>
+            <div class="slider-control">
+              <label>Layout</label>
+              <select data-effect="dotMatrixLayout">
+                <option value="grid">Grid</option>
+                <option value="brick">Brick (versetzt)</option>
+              </select>
+            </div>
+            <div class="slider-control">
+              <label>Gamma</label>
+              <div class="slider-row">
+                <input type="range" min="0.2" max="3.0" step="0.1" value="1" data-effect="dotMatrixGamma">
+                <span class="slider-value">1</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Farb-Modus</label>
+              <select data-effect="dotMatrixColorMode">
+                <option value="original">Original</option>
+                <option value="mono">Mono</option>
+                <option value="invert">Invertiert</option>
+              </select>
+            </div>
+            <div class="color-row">
+              <label>Farbe</label>
+              <input type="color" value="#ffffff" data-effect="dotMatrixColor">
+              <label>Hintergrund</label>
+              <input type="color" value="#000000" data-effect="dotMatrixBg">
+            </div>
+            <div class="slider-control">
+              <label>Invertieren</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="dotMatrixInvert">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="slider-control">
+              <label>Weich</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="dotMatrixSoft">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ASCII -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="ascii">
+            <span>ASCII Art</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content collapsed" id="ascii">
+            <div class="slider-control">
+              <label>Aktivieren</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="asciiEnabled">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="slider-control">
+              <label>Overlay Modus</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="asciiOverlay">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="slider-control">
+              <label>Deckkraft</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="80" data-effect="asciiOverlayOpacity">
+                <span class="slider-value">80</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Zeichensatz</label>
+              <select data-effect="asciiCharset">
+                <option value="simple">Einfach (.:-=+*#%@)</option>
+                <option value="detailed">Detailliert</option>
+                <option value="blocks">Blöcke (█▓▒░)</option>
+                <option value="braille">Braille</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="slider-control">
+              <label>Custom Zeichen</label>
+              <input type="text" class="text-input" data-effect="asciiCustomChars" value=" .:-=+*#%@" placeholder="Zeichen hell→dunkel">
+            </div>
+            <div class="slider-control">
+              <label>Zellengröße</label>
+              <div class="slider-row">
+                <input type="range" min="4" max="20" value="8" data-effect="asciiCellSize">
+                <span class="slider-value">8</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Farbmodus</label>
+              <select data-effect="asciiColorMode">
+                <option value="mono">Monochrom</option>
+                <option value="color">Farbig</option>
+                <option value="custom">Custom Farbe</option>
+              </select>
+            </div>
+            <div class="color-row">
+              <label>Textfarbe</label>
+              <input type="color" value="#00ff00" data-effect="asciiColor">
+              <label>Hintergrund</label>
+              <input type="color" value="#000000" data-effect="asciiBg">
+            </div>
+            <div class="slider-control">
+              <label>Edge Detection</label>
+              <label class="toggle">
+                <input type="checkbox" data-effect="asciiEdges">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pixel/Retro -->
+        <section class="control-group">
+          <h3 class="group-title" data-toggle="retro">
+            <span>Pixel / Retro</span>
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </h3>
+          <div class="group-content collapsed" id="retro">
+            <div class="slider-control">
+              <label>Pixelate</label>
+              <div class="slider-row">
+                <input type="range" min="1" max="32" value="1" data-effect="pixelate">
+                <span class="slider-value">1</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Scanlines</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="scanlines">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Scanline Dicke</label>
+              <div class="slider-row">
+                <input type="range" min="1" max="8" value="2" data-effect="scanlineWidth">
+                <span class="slider-value">2</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Halftone</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="halftone">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Halftone Größe</label>
+              <div class="slider-row">
+                <input type="range" min="2" max="16" value="4" data-effect="halftoneSize">
+                <span class="slider-value">4</span>
+              </div>
+            </div>
+            <div class="slider-control">
+              <label>Glitch</label>
+              <div class="slider-row">
+                <input type="range" min="0" max="100" value="0" data-effect="glitch">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Export -->
+        <section class="control-group">
+          <div class="export-buttons">
+            <button class="btn-secondary" id="btn-export-png">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PNG
+            </button>
+            <button class="btn-secondary" id="btn-export-txt">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              TXT
+            </button>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- Main Canvas Area -->
+    <main class="canvas-area" id="canvas-area">
+      <div class="dropzone" id="dropzone">
+        <div class="dropzone-content">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p>Bild hierher ziehen oder klicken</p>
+          <span class="dropzone-hint">PNG, JPG, WebP, GIF</span>
+        </div>
+      </div>
+      <div class="canvas-wrapper hidden" id="canvas-wrapper">
+        <canvas id="canvas-preview"></canvas>
+        <canvas id="canvas-ascii" class="hidden"></canvas>
+        <pre id="ascii-output" class="hidden"></pre>
+      </div>
+      <div class="canvas-toolbar hidden" id="canvas-toolbar">
+        <button class="btn-icon" id="btn-zoom-in" title="Zoom +">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button class="btn-icon" id="btn-zoom-out" title="Zoom -">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button class="btn-icon" id="btn-fit" title="Einpassen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </button>
+        <span class="zoom-level" id="zoom-level">100%</span>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/effects.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
