@@ -1,39 +1,36 @@
-# Dependencies
-node_modules/
-package-lock.json
-
-# Build
+# Build / Output
 dist/
 build/
-*.exe
-*.dmg
-*.pkg
+out/
+.output/
 
-# Config (sensible Daten)
-config/app-settings.json
-config/modules/*.json
+# Dependencies
+node_modules/
+.pnp
+.yarn/
+
+# Environment
+.env
+.env.local
+.env.*.local
 
 # Logs
 *.log
-logs/
+npm-debug.log*
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
+*.suo
+*.user
 
-# Electron
-out/
-
-PROJECT_MAP.md
+# Tool-Dateien
 ghflow.bat
-aws-credentials.json
-
-users.json
-assets/
-yous.af
+PROJECT_MAP.md
+CLAUDE.md
+GEMINI.md
